@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import Gallery from '../components/Gallery.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { HERO, STATEMENT, EXPERTISE, SITE } from '../consts';
+
+const galleryItems = EXPERTISE.map((e) => ({
+  image: e.image,
+  title: e.title,
+  sub: e.titleEn,
+  desc: e.desc,
+}));
+---
+<Base>
+  <div class="container">
+    <header class="hero">
+      <h1 class="hero-big hover-target">
+        {HERO.titleLines.map((line) => <span style="display:block">{line}</span>)}
+      </h1>
+      <p class="hero-desc" set:html={HERO.desc} />
+      <div class="scroll-hint">Scroll ↓</div>
+    </header>
+
+    <!-- ステートメント -->
+    <section class="sec">
+      <p class="statement">
+        {STATEMENT.lead}<br /><br />
+        <span style="color:var(--muted); font-size:1rem; line-height:2;">{STATEMENT.body}</span>
+      </p>
+    </section>
+
+    <!-- Expertise 抜粋 -->
+    <section class="sec">
+      <h2 class="sec-title">Expertise</h2>
+      <div class="service-list">
+        {EXPERTISE.map((e) => (
+          <a href="/expertise/" class="srv-item hover-target" style="color:inherit;">
+            <div style="display:flex; align-items:center;">
+              <span class="srv-num">/{e.num}</span>
+              <span class="srv-name">{e.title}</span>
+            </div>
+            <span class="srv-arrow">VIEW DETAIL →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Selected Works -->
+    <section class="sec">
+      <h2 class="sec-title">Selected Works</h2>
+      <Gallery items={galleryItems} />
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band">
+      <p class="cta-lead">理想と現実のあいだに、確かな「解」を。</p>
+      <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
+    </section>
+  </div>
+  <Lightbox />
+</Base>

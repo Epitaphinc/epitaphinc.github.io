@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { EXPERTISE } from '../consts';
+---
+<Base
+  title="Expertise"
+  description="株式会社Epitaphの専門領域。戦略策定・組織開発・プロジェクトマネジメント・新規事業開発・データ分析・AIトランスフォーメーション・デジタルソリューション・ソーシャルインパクトまで、戦略から実装まで一気通貫で支援します。"
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="page-eyebrow">Expertise</p>
+      <h1 class="page-title">What We Do</h1>
+      <p class="page-lead">
+        戦略の策定から現場での実装・定着まで。一気通貫で伴走し、事業と組織のポテンシャルを解放する8つの領域です。
+      </p>
+    </div>
+
+    {EXPERTISE.map((e) => (
+      <article class="exp-block">
+        <div
+          class="exp-visual img-mask hover-target"
+          data-lightbox
+          data-img={e.image}
+          data-title={e.title}
+          data-desc={e.desc}
+        >
+          <img class="g-img" src={e.image} alt={e.title} loading="lazy" />
+        </div>
+        <div class="exp-body">
+          <div class="exp-num">/{e.num}</div>
+          <div class="exp-title">{e.titleEn}</div>
+          <h2 class="exp-name">{e.title}</h2>
+          <p class="exp-desc">{e.desc}</p>
+        </div>
+      </article>
+    ))}
+
+    <section class="cta-band">
+      <p class="cta-lead">どの領域から始めるべきか。まずは現状をお聞かせください。</p>
+      <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
+    </section>
+  </div>
+  <Lightbox />
+</Base>

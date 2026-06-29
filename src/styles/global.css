@@ -1,0 +1,317 @@
+/* ==========================================================
+ * 株式会社Epitaph — グローバルスタイル
+ * 既存サイトのダーク×ミニマルの世界観を継承し、
+ * 複数ページ運用のための共通要素（ナビ/ページ見出し/本文/フォーム）を追加。
+ * ========================================================== */
+
+/* ---- 配色（ここを変えれば全体の雰囲気が変わります） ---- */
+:root {
+  --bg: #050505;        /* 背景（ほぼ黒） */
+  --text: #e0e0e0;      /* 基本文字色 */
+  --muted: #888;        /* 補助テキスト */
+  --faint: #555;        /* さらに薄いテキスト/番号 */
+  --line: #333;         /* 罫線 */
+  --accent: #fff;       /* ホバー時の発光 */
+  --maxw: 1400px;
+}
+
+* { box-sizing: border-box; }
+
+/* カスタムカーソルを使うため標準カーソルは非表示 */
+html { -webkit-text-size-adjust: 100%; }
+body { cursor: none; }
+a, button, .hover-target { cursor: none; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+a { color: inherit; text-decoration: none; transition: color 0.3s; }
+a:hover { color: var(--accent); }
+
+img { max-width: 100%; display: block; }
+
+/* ---- ノイズエフェクト（画面全体のザラつき） ---- */
+.noise {
+  position: fixed; inset: 0; z-index: 999;
+  pointer-events: none; opacity: 0.05;
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC42IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIiBvcGFjaXR5PSIwLjUiLz48L3N2Zz4=');
+}
+
+/* ---- カスタムカーソル（白い追従円） ---- */
+.cursor-dot, .cursor-circle {
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000;
+  border-radius: 50%; transform: translate(-50%, -50%);
+  mix-blend-mode: exclusion;
+}
+.cursor-dot { width: 8px; height: 8px; background: #fff; }
+.cursor-circle {
+  width: 40px; height: 40px; border: 1px solid #fff;
+  transition: width 0.3s, height 0.3s, background 0.3s;
+}
+body.hovering .cursor-circle {
+  width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-color: transparent;
+}
+
+/* ---- レイアウト ---- */
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 4vw; }
+
+/* ---- グローバルナビ ---- */
+.nav {
+  position: fixed; top: 0; left: 0; width: 100%; z-index: 900;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.6rem 4vw;
+  mix-blend-mode: difference; /* 背景の明暗に応じて反転して常に視認可能 */
+}
+.nav-brand {
+  font-family: 'Montserrat', sans-serif; font-weight: 700;
+  letter-spacing: 0.05em; font-size: 1.05rem; color: #fff;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; }
+.nav-links a {
+  font-family: 'Montserrat', sans-serif; font-weight: 700;
+  font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
+  position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: -6px; width: 0; height: 1px;
+  background: #fff; transition: width 0.3s;
+}
+.nav-links a:hover::after, .nav-links a[aria-current="page"]::after { width: 100%; }
+
+/* ---- 各ページ共通の見出しヘッダー ---- */
+.page-head { padding: 14rem 0 4rem; }
+.page-eyebrow {
+  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); margin: 0 0 1rem;
+}
+.page-title {
+  font-family: 'Montserrat', sans-serif; font-weight: 700;
+  font-size: clamp(2.6rem, 7vw, 5rem); line-height: 0.95; margin: 0;
+  text-transform: uppercase;
+}
+.page-lead {
+  margin-top: 2rem; max-width: 640px; font-size: 1.05rem; line-height: 2; color: var(--muted);
+}
+
+/* ---- セクション共通 ---- */
+.sec { padding: 6rem 0; }
+.sec-title {
+  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2.4rem;
+  margin: 0 0 3rem; border-bottom: 1px solid var(--line); padding-bottom: 1rem;
+  display: inline-block; text-transform: uppercase;
+}
+
+/* ---- ヒーロー（トップページ） ---- */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  position: relative;
+}
+.hero-big {
+  font-family: 'Montserrat', sans-serif; font-weight: 700;
+  font-size: 10vw; text-transform: uppercase; line-height: 0.9;
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+  margin: 0; transition: 0.5s;
+}
+.hero:hover .hero-big { color: #fff; }
+.hero-desc {
+  margin-top: 2rem; max-width: 420px; font-size: 0.95rem; line-height: 1.9;
+  color: var(--muted); margin-left: auto;
+}
+.scroll-hint {
+  position: absolute; bottom: 3rem; left: 0; font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase;
+}
+
+/* ---- Expertise リスト ---- */
+.service-list { border-top: 1px solid var(--line); }
+.srv-item {
+  border-bottom: 1px solid var(--line); padding: 2.6rem 0;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: 0.4s; position: relative;
+}
+.srv-item:hover { padding-left: 2rem; background: #111; }
+.srv-num { font-family: 'Montserrat', sans-serif; color: var(--faint); margin-right: 2rem; }
+.srv-name { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 300; }
+.srv-en { color: var(--faint); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; }
+.srv-arrow { font-size: 1.4rem; opacity: 0; transition: 0.4s; transform: translateX(-20px); }
+.srv-item:hover .srv-arrow { opacity: 1; transform: translateX(0); }
+
+/* Expertise 詳細（expertise ページ） */
+.exp-block {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  padding: 6rem 0; border-bottom: 1px solid var(--line);
+}
+.exp-block:nth-child(even) .exp-visual { order: 2; }
+.exp-num {
+  font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--faint); letter-spacing: 0.1em;
+}
+.exp-title {
+  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1rem;
+  letter-spacing: 0.1em; color: var(--faint); margin: 0.3rem 0 0.6rem; text-transform: uppercase;
+}
+.exp-name { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 300; margin: 0 0 1.6rem; }
+.exp-desc { color: var(--muted); font-size: 1rem; line-height: 2; max-width: 36em; }
+
+/* ---- ギャラリー（グレースケール→ホバーでカラー） ---- */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8vw; margin-top: 4rem; }
+.gal-item { margin-bottom: 8rem; }
+.gal-item:nth-child(even) { margin-top: 12rem; }
+.img-mask { width: 100%; overflow: hidden; position: relative; }
+.g-img {
+  width: 100%; height: auto; display: block; filter: grayscale(100%);
+  transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1.1);
+}
+.img-mask:hover .g-img { filter: grayscale(0%); transform: scale(1); }
+.g-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-top: 1rem; display: block; }
+.g-sub { color: var(--faint); font-size: 0.8rem; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ---- 本文（About / Work などテキスト主体） ---- */
+.prose { max-width: 760px; }
+.prose p { color: var(--muted); font-size: 1.05rem; line-height: 2.1; margin: 0 0 1.6rem; }
+.prose strong { color: var(--text); font-weight: 500; }
+.statement {
+  font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.9; font-weight: 300; color: var(--text);
+  max-width: 24em;
+}
+.statement .em { color: #fff; }
+
+/* バリュー/カードグリッド */
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+.card {
+  border: 1px solid var(--line); padding: 2.5rem; transition: 0.4s; background: transparent;
+}
+.card:hover { background: #0d0d0d; border-color: #555; }
+.card-num { font-family: 'Montserrat', sans-serif; color: var(--faint); font-size: 0.85rem; letter-spacing: 0.1em; }
+.card-title { font-size: 1.4rem; font-weight: 300; margin: 1rem 0; }
+.card-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.9; }
+
+/* 沿革（タイムライン） */
+.timeline { border-top: 1px solid var(--line); }
+.tl-row {
+  display: grid; grid-template-columns: 160px 1fr; gap: 2rem; padding: 1.8rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.tl-year { font-family: 'Montserrat', sans-serif; color: var(--faint); }
+.tl-text { color: var(--muted); }
+
+/* 会社概要テーブル */
+.co-dl { display: grid; grid-template-columns: 160px 1fr; row-gap: 1.6rem; margin: 0; }
+.co-dt { font-family: 'Montserrat', sans-serif; font-weight: 700; color: var(--faint); letter-spacing: 0.05em; }
+.co-dd { margin: 0; font-weight: 300; line-height: 1.8; }
+
+/* ---- CTA ボタン ---- */
+.btn {
+  display: inline-block; font-family: 'Montserrat', sans-serif; font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid #555; padding: 1rem 2.4rem; color: #fff; transition: 0.3s;
+}
+.btn:hover { background: #fff; color: #050505; letter-spacing: 0.15em; }
+
+/* 大型 CTA（フッター上の誘導） */
+.cta-band { text-align: center; padding: 8rem 0; border-top: 1px solid var(--line); }
+.cta-lead { color: var(--muted); margin-bottom: 2.5rem; font-size: 1.05rem; }
+.cta-big {
+  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(2.2rem, 6vw, 4rem);
+  color: #fff; display: inline-block; transition: 0.3s;
+}
+.cta-big:hover { letter-spacing: 0.06em; color: var(--muted); }
+
+/* ---- フォーム ---- */
+.form { max-width: 640px; display: grid; gap: 2rem; }
+.field { display: grid; gap: 0.6rem; }
+.field label {
+  font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.field input, .field textarea, .field select {
+  background: transparent; border: none; border-bottom: 1px solid var(--line);
+  color: var(--text); font-family: inherit; font-size: 1rem; padding: 0.8rem 0;
+  transition: border-color 0.3s;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none; border-color: #fff;
+}
+.field textarea { resize: vertical; min-height: 140px; }
+.field select option { background: #111; }
+.hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; } /* honeypot */
+.form-note { color: var(--faint); font-size: 0.85rem; line-height: 1.8; }
+
+/* ---- フッター ---- */
+footer {
+  padding: 4rem 0; border-top: 1px solid var(--line); margin-top: 4rem;
+}
+.foot-grid {
+  display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem;
+}
+.foot-brand { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff; }
+.foot-tag { color: var(--faint); font-size: 0.85rem; margin-top: 0.5rem; }
+.foot-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.foot-links a { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.foot-copy { color: var(--faint); font-size: 0.8rem; margin-top: 3rem; }
+
+/* ---- ライトボックス（画像拡大） ---- */
+.lightbox {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 5000;
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: 0.4s; padding: 4vw;
+}
+.lightbox.active { opacity: 1; pointer-events: auto; }
+.lb-content {
+  display: flex; width: 100%; max-width: 1200px; gap: 4rem;
+  align-items: center; justify-content: center; transform: scale(0.95); transition: 0.4s;
+}
+.lightbox.active .lb-content { transform: scale(1); }
+.lb-img-wrap { flex: 3; max-height: 80vh; display: flex; align-items: center; justify-content: center; }
+.lb-img { max-width: 100%; max-height: 80vh; box-shadow: 0 0 30px rgba(0,0,0,0.8); width: auto; height: auto; }
+.lb-info { flex: 2; display: none; flex-direction: column; justify-content: center; text-align: left; opacity: 0; transform: translateX(20px); transition: 0.5s 0.2s; }
+.lightbox.active .lb-info { opacity: 1; transform: translateX(0); }
+.lightbox.has-text .lb-info { display: flex; }
+.lightbox:not(.has-text) .lb-img-wrap { flex: auto; width: 100%; }
+.lb-title { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin-bottom: 1.5rem; color: #fff; line-height: 1.1; }
+.lb-desc { font-size: 0.95rem; line-height: 1.9; color: #aaa; border-left: 1px solid var(--line); padding-left: 1.5rem; }
+.lb-close { position: absolute; top: 30px; right: 30px; font-size: 1.4rem; color: #fff; font-family: 'Montserrat', sans-serif; z-index: 10; }
+
+/* ---- レスポンシブ ---- */
+@media (max-width: 768px) {
+  .nav { padding: 1.2rem 5vw; }
+  .nav-links { gap: 1.1rem; }
+  .nav-links a { font-size: 0.7rem; }
+  .hero-big { font-size: 15vw; }
+  .hero-desc { margin-left: 0; }
+  .page-head { padding: 9rem 0 3rem; }
+
+  .gallery { grid-template-columns: 1fr; gap: 2rem; }
+  .gal-item, .gal-item:nth-child(even) { margin-top: 0; margin-bottom: 3rem; }
+
+  .exp-block { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 0; }
+  .exp-block:nth-child(even) .exp-visual { order: 0; }
+
+  .grid-3 { grid-template-columns: 1fr; gap: 1.5rem; }
+  .tl-row, .co-dl { grid-template-columns: 1fr; gap: 0.4rem; }
+
+  .lb-content { flex-direction: column; gap: 2rem; overflow-y: auto; max-height: 90vh; }
+  .lb-img-wrap { width: 100%; flex: none; }
+  .lb-img { max-height: 50vh; width: 100%; object-fit: contain; }
+
+  /* スマホではカスタムカーソルを無効化 */
+  .cursor-dot, .cursor-circle { display: none; }
+  body, a, button, .hover-target { cursor: auto; }
+}
+
+/* アクセシビリティ: モーション抑制設定を尊重 */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .cursor-dot, .cursor-circle { display: none; }
+  body { cursor: auto; }
+}

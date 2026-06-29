@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import { COMPANY, STATEMENT, SITE } from '../consts';
+
+const values = [
+  {
+    num: '01',
+    title: '現実解',
+    en: 'Realism',
+    desc: '理想論で終わらせない。財務的な裏付けと現場の実行可能性を兼ね備えた「現実解」だけを、成果として刻みます。',
+  },
+  {
+    num: '02',
+    title: '伴走',
+    en: 'Hands-on',
+    desc: '提案書を渡して終わりにしない。戦略の策定から現場での実装・定着まで、泥臭く、確実に伴走します。',
+  },
+  {
+    num: '03',
+    title: '本質',
+    en: 'Essence',
+    desc: '表層の課題に対症療法を施さない。事業と組織に深く刻まれた本質と潜在能力を引き出します。',
+  },
+];
+
+const history = [
+  { year: '2019', text: '株式会社Epitaph 設立（大阪府箕面市）。' },
+  { year: 'Now', text: '中小企業・スタートアップの新規事業開発、組織開発、AI・DX推進を伴走支援。' },
+];
+---
+<Base
+  title="About"
+  description="株式会社Epitaphについて。経営のロジックと現場のリアリティを融合させ、常に「現実解」を創造するビジネススタジオ。理念・代表メッセージ・会社概要をご紹介します。"
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="page-eyebrow">About</p>
+      <h1 class="page-title">Studio</h1>
+      <p class="page-lead">{STATEMENT.lead}{STATEMENT.body}</p>
+    </div>
+
+    <!-- ミッション -->
+    <section class="sec">
+      <h2 class="sec-title">Mission</h2>
+      <p class="statement">
+        戦略を、<span class="em">現場の日常</span>へ。<br />
+        理想と現実をつなぐ「解」を刻む。
+      </p>
+    </section>
+
+    <!-- バリュー -->
+    <section class="sec">
+      <h2 class="sec-title">Values</h2>
+      <div class="grid-3">
+        {values.map((v) => (
+          <div class="card hover-target">
+            <span class="card-num">/{v.num} {v.en}</span>
+            <h3 class="card-title">{v.title}</h3>
+            <p class="card-desc">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 代表メッセージ（※草案。内容は要レビュー・差し替え） -->
+    <section class="sec">
+      <h2 class="sec-title">Message</h2>
+      <div class="prose">
+        <p>
+          私たちは、経営の「ロジック」と現場の「リアリティ」は、本来分かちがたいものだと考えています。
+          どれほど精緻な戦略も、現場で動かなければ意味を持ちません。逆に、現場の熱量も、進むべき方向を示す論理がなければ空回りします。
+        </p>
+        <p>
+          Epitaph（エピタフ）とは、墓碑に刻まれる言葉のこと。
+          私たちは、事業や組織に<strong>本質的な「解」を刻む</strong>という意志を、この社名に込めました。
+          流行りの手法をなぞるのではなく、その企業にとっての「現実解」を、ともに考え、ともに実装する。
+          それが、ビジネススタジオとしての私たちの役割です。
+        </p>
+        <p>
+          理想と現実のあいだで立ち止まっている事業に、確かな一歩を。お気軽にご相談ください。
+        </p>
+        <p style="color:var(--text); font-weight:500; margin-top:2.5rem;">
+          {COMPANY.name}　代表取締役　{COMPANY.ceo}
+        </p>
+      </div>
+    </section>
+
+    <!-- 沿革 -->
+    <section class="sec">
+      <h2 class="sec-title">History</h2>
+      <div class="timeline">
+        {history.map((h) => (
+          <div class="tl-row">
+            <span class="tl-year">{h.year}</span>
+            <span class="tl-text">{h.text}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 会社概要 -->
+    <section class="sec">
+      <h2 class="sec-title">Company</h2>
+      <dl class="co-dl">
+        <dt class="co-dt">NAME</dt>
+        <dd class="co-dd">{COMPANY.name}（{COMPANY.nameEn}）</dd>
+        <dt class="co-dt">ADDRESS</dt>
+        <dd class="co-dd">{COMPANY.address}</dd>
+        <dt class="co-dt">FOUNDED</dt>
+        <dd class="co-dd">{COMPANY.founded}</dd>
+        <dt class="co-dt">CEO</dt>
+        <dd class="co-dd">{COMPANY.ceo}</dd>
+        <dt class="co-dt">CONTACT</dt>
+        <dd class="co-dd"><a href={`mailto:${SITE.email}`} class="hover-target">{SITE.email}</a></dd>
+      </dl>
+    </section>
+
+    <section class="cta-band">
+      <p class="cta-lead">事業と組織のポテンシャルを、解放する。</p>
+      <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
+    </section>
+  </div>
+</Base>

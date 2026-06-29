@@ -1,0 +1,82 @@
+---
+import { SITE, COMPANY } from '../consts';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Atmosphere from '../components/Atmosphere.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+const { title, description = SITE.description, ogImage = SITE.ogImage } = Astro.props;
+
+const pageTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | ${SITE.tagline}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImageUrl = new URL(ogImage, SITE.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: COMPANY.name,
+  alternateName: COMPANY.nameEn,
+  url: SITE.url,
+  logo: new URL('/favicon.ico', SITE.url).href,
+  image: ogImageUrl,
+  email: SITE.email,
+  foundingDate: '2019-04-19',
+  founder: { '@type': 'Person', name: COMPANY.ceo },
+  address: {
+    '@type': 'PostalAddress',
+    postalCode: '562-0001',
+    addressRegion: '大阪府',
+    addressLocality: '箕面市',
+    streetAddress: '箕面3-11-25',
+    addressCountry: 'JP',
+  },
+};
+---
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.nameEn} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="ja_JP" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Noto+Sans+JP:wght@300;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <Atmosphere />
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

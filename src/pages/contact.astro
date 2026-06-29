@@ -1,0 +1,133 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, COMPANY, FORMSPREE_ID } from '../consts';
+
+const formspreeAction = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : '';
+const configured = Boolean(FORMSPREE_ID);
+---
+<Base
+  title="Contact"
+  description="株式会社Epitaphへのお問い合わせ。新規事業開発・組織開発・AI/DX推進のご相談はこちらから。大阪・箕面を拠点に対応します。"
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="page-eyebrow">Contact</p>
+      <h1 class="page-title">Get in Touch</h1>
+      <p class="page-lead">
+        ご相談・お問い合わせは下記フォーム、またはメールにて承ります。<br />
+        まずは現状の課題やお考えを、お気軽にお聞かせください。
+      </p>
+    </div>
+
+    <section class="sec" style="padding-top:0;">
+      <form
+        class="form"
+        method="POST"
+        action={formspreeAction}
+        data-configured={configured ? 'true' : 'false'}
+        data-email={SITE.email}
+      >
+        <div class="field">
+          <label for="name">お名前 *</label>
+          <input id="name" name="name" type="text" required />
+        </div>
+        <div class="field">
+          <label for="company">会社名 / 屋号</label>
+          <input id="company" name="company" type="text" />
+        </div>
+        <div class="field">
+          <label for="email">メールアドレス *</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div class="field">
+          <label for="topic">ご相談の種類</label>
+          <select id="topic" name="topic">
+            <option>新規事業開発</option>
+            <option>組織開発</option>
+            <option>AI・DX推進</option>
+            <option>戦略策定 / その他経営支援</option>
+            <option>協業・提携のご相談</option>
+            <option>その他</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">お問い合わせ内容 *</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+
+        <!-- スパム対策（人間には見えない） -->
+        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+
+        <div>
+          <button type="submit" class="btn hover-target">送信する</button>
+        </div>
+        <p class="form-note" id="form-status"></p>
+      </form>
+    </section>
+
+    <!-- 直接の連絡先 -->
+    <section class="sec">
+      <h2 class="sec-title">Direct</h2>
+      <dl class="co-dl">
+        <dt class="co-dt">EMAIL</dt>
+        <dd class="co-dd"><a href={`mailto:${SITE.email}`} class="hover-target">{SITE.email}</a></dd>
+        <dt class="co-dt">COMPANY</dt>
+        <dd class="co-dd">{COMPANY.name}</dd>
+        <dt class="co-dt">ADDRESS</dt>
+        <dd class="co-dd">{COMPANY.address}</dd>
+      </dl>
+    </section>
+  </div>
+
+  <script>
+    // Formspree 未設定時は mailto にフォールバック
+    const form = document.querySelector<HTMLFormElement>('form.form');
+    const status = document.getElementById('form-status');
+    if (form) {
+      const configured = form.dataset.configured === 'true';
+      const email = form.dataset.email || '';
+
+      if (!configured) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const data = new FormData(form);
+          if (data.get('_gotcha')) return; // bot
+          const lines = [
+            `お名前: ${data.get('name') || ''}`,
+            `会社名: ${data.get('company') || ''}`,
+            `メール: ${data.get('email') || ''}`,
+            `種類: ${data.get('topic') || ''}`,
+            '',
+            `${data.get('message') || ''}`,
+          ].join('\n');
+          const subject = encodeURIComponent('Webサイトからのお問い合わせ');
+          const body = encodeURIComponent(lines);
+          window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        });
+      } else {
+        // Formspree を fetch 送信し、ページ遷移なしで完了表示
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const data = new FormData(form);
+          if (data.get('_gotcha')) return;
+          if (status) status.textContent = '送信中…';
+          try {
+            const res = await fetch(form.action, {
+              method: 'POST',
+              body: data,
+              headers: { Accept: 'application/json' },
+            });
+            if (res.ok) {
+              form.reset();
+              if (status) status.textContent = 'お問い合わせを受け付けました。ありがとうございます。';
+            } else {
+              if (status) status.textContent = '送信に失敗しました。お手数ですがメールにてご連絡ください。';
+            }
+          } catch {
+            if (status) status.textContent = '送信に失敗しました。お手数ですがメールにてご連絡ください。';
+          }
+        });
+      }
+    }
+  </script>
+</Base>

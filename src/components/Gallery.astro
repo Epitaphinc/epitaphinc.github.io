@@ -1,0 +1,30 @@
+---
+// グレースケール→ホバーでカラーになる2列ギャラリー。クリックで Lightbox 拡大。
+export type GalleryItem = {
+  image: string;
+  title: string;
+  sub?: string;
+  desc?: string;
+};
+interface Props {
+  items: GalleryItem[];
+}
+const { items } = Astro.props;
+---
+<div class="gallery">
+  {items.map((item) => (
+    <div class="gal-item">
+      <div
+        class="img-mask hover-target"
+        data-lightbox
+        data-img={item.image}
+        data-title={item.title}
+        data-desc={item.desc ?? ''}
+      >
+        <img class="g-img" src={item.image} alt={item.title} loading="lazy" />
+      </div>
+      <span class="g-title">{item.title}</span>
+      {item.sub && <span class="g-sub">{item.sub}</span>}
+    </div>
+  ))}
+</div>

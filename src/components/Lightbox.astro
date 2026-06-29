@@ -1,0 +1,57 @@
+---
+// 画像拡大モーダル。ギャラリーを使うページで1回読み込む。
+---
+<div id="lightbox" class="lightbox">
+  <div class="lb-close hover-target">CLOSE</div>
+  <div class="lb-content">
+    <div class="lb-img-wrap">
+      <img id="lb-img" class="lb-img" src="" alt="" />
+    </div>
+    <div class="lb-info">
+      <h3 id="lb-title" class="lb-title"></h3>
+      <p id="lb-desc" class="lb-desc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
+  const lbTitle = document.getElementById('lb-title');
+  const lbDesc = document.getElementById('lb-desc');
+
+  if (lb && lbImg && lbTitle && lbDesc) {
+    (window as any).openLightbox = (src: string, title?: string, desc?: string) => {
+      lbImg.src = src;
+      if (title && desc) {
+        lb.classList.add('has-text');
+        lbTitle.textContent = title;
+        lbDesc.textContent = desc;
+      } else {
+        lb.classList.remove('has-text');
+        lbTitle.textContent = '';
+        lbDesc.textContent = '';
+      }
+      lb.classList.add('active');
+    };
+
+    lb.addEventListener('click', () => {
+      lb.classList.remove('active');
+      setTimeout(() => {
+        lbImg.src = '';
+        lb.classList.remove('has-text');
+      }, 400);
+    });
+
+    // ギャラリー画像のクリックを拾う
+    document.querySelectorAll<HTMLElement>('[data-lightbox]').forEach((el) => {
+      el.addEventListener('click', () => {
+        (window as any).openLightbox(
+          el.dataset.img,
+          el.dataset.title || undefined,
+          el.dataset.desc || undefined
+        );
+      });
+    });
+  }
+</script>

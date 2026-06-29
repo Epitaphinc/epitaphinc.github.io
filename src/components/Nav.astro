@@ -1,0 +1,20 @@
+---
+import { SITE, NAV } from '../consts';
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+<nav class="nav">
+  <a href="/" class="nav-brand hover-target">EPITAPH</a>
+  <ul class="nav-links">
+    {NAV.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          class="hover-target"
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >{item.label}</a>
+      </li>
+    ))}
+  </ul>
+</nav>

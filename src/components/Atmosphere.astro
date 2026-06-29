@@ -1,0 +1,40 @@
+---
+// 世界観の演出：ノイズ＋カスタムカーソル（全ページ共通）
+---
+<div class="noise"></div>
+<div class="cursor-dot"></div>
+<div class="cursor-circle"></div>
+
+<script>
+  // カスタムカーソル（白い追従円）＋ ホバー拡大
+  const dot = document.querySelector<HTMLElement>('.cursor-dot');
+  const circle = document.querySelector<HTMLElement>('.cursor-circle');
+
+  if (dot && circle && window.matchMedia('(pointer: fine)').matches) {
+    let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    const animate = () => {
+      curX += (mouseX - curX) * 0.15;
+      curY += (mouseY - curY) * 0.15;
+      circle.style.left = curX + 'px';
+      circle.style.top = curY + 'px';
+      requestAnimationFrame(animate);
+    };
+    animate();
+
+    document.body.addEventListener('mouseover', (e) => {
+      const t = e.target as HTMLElement;
+      if (t.closest('.hover-target') || t.closest('a') || t.closest('button')) {
+        document.body.classList.add('hovering');
+      } else {
+        document.body.classList.remove('hovering');
+      }
+    });
+  }
+</script>

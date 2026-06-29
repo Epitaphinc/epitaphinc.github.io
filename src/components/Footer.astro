@@ -1,0 +1,19 @@
+---
+import { SITE, NAV } from '../consts';
+const year = new Date().getFullYear();
+---
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">EPITAPH</div>
+        <div class="foot-tag">{SITE.tagline}</div>
+      </div>
+      <div class="foot-links">
+        {NAV.map((item) => <a href={item.href} class="hover-target">{item.label}</a>)}
+        <a href={`mailto:${SITE.email}`} class="hover-target">Mail</a>
+      </div>
+    </div>
+    <div class="foot-copy">&copy; {year} {SITE.name} / {SITE.nameEn}</div>
+  </div>
+</footer>

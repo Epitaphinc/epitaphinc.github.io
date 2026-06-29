@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Gallery from '../components/Gallery.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { EXPERTISE } from '../consts';
+
+const galleryItems = EXPERTISE.map((e) => ({
+  image: e.image,
+  title: e.title,
+  sub: e.titleEn,
+  desc: e.desc,
+}));
+---
+<Base
+  title="Work"
+  description="株式会社Epitaphの取り組み。自社プロダクト「データ化.com」をはじめ、戦略から実装まで現場検証に基づく事業創出・DX推進の実例をご紹介します。"
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="page-eyebrow">Work</p>
+      <h1 class="page-title">Initiatives</h1>
+      <p class="page-lead">
+        机上の空論ではなく、現場検証に基づいた取り組みを。自社事業と支援先での実践から生まれた「現実解」をご紹介します。
+      </p>
+    </div>
+
+    <!-- フラッグシップ：データ化.com（自社プロダクト） -->
+    <section class="sec">
+      <h2 class="sec-title">Flagship</h2>
+      <article class="exp-block">
+        <div class="exp-visual img-mask hover-target"
+          data-lightbox data-img="/image/project7.jpg" data-title="データ化.com">
+          <img class="g-img" src="/image/project7.jpg" alt="データ化.com" loading="lazy" />
+        </div>
+        <div class="exp-body">
+          <div class="exp-title">Digital Solution</div>
+          <h2 class="exp-name">データ化.com</h2>
+          <p class="exp-desc">
+            過剰な機能よりも「現場が使いこなせる現実解」を重視した、自社開発のデジタルソリューション。
+            業務フローに滑らかに溶け込む、実利あるDXを体現するプロダクトです。
+          </p>
+        </div>
+      </article>
+    </section>
+
+    {/*
+      TODO（実績の追加）:
+      支援先の事例を追加する場合は、守秘に配慮し「業種＋課題＋アプローチ＋成果」を匿名化して
+      ここに <article class="exp-block"> 形式で差し込む。実在の取引先名・売上実数は記載しない。
+    */}
+
+    <!-- 領域別の取り組み -->
+    <section class="sec">
+      <h2 class="sec-title">Fields of Work</h2>
+      <p class="page-lead" style="margin-bottom:1rem;">
+        私たちが手がける領域の一端。画像をクリックすると詳細をご覧いただけます。
+      </p>
+      <Gallery items={galleryItems} />
+    </section>
+
+    <!-- 守秘に関する誠実な注記 -->
+    <section class="sec">
+      <div class="prose">
+        <p class="form-note">
+          ※ 個別の支援案件につきましては、守秘義務の都合上、本サイトでの詳細公開を控えております。
+          具体的な実績・事例については、お問い合わせいただければ可能な範囲でご説明いたします。
+        </p>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <p class="cta-lead">あなたの事業にとっての「現実解」を、ともに。</p>
+      <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
+    </section>
+  </div>
+  <Lightbox />
+</Base>
