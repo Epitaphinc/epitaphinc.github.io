@@ -1,4 +1,5 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Lightbox from '../components/Lightbox.astro';
 import { EXPERTISE } from '../consts';
@@ -9,23 +10,31 @@ import { EXPERTISE } from '../consts';
 >
   <div class="container">
     <div class="page-head">
-      <p class="page-eyebrow">Expertise</p>
-      <h1 class="page-title">What We Do</h1>
-      <p class="page-lead">
+      <p class="page-eyebrow reveal">Expertise</p>
+      <h1 class="page-title reveal" style="--rv-delay:80ms">What We Do</h1>
+      <p class="page-lead reveal" style="--rv-delay:160ms">
         戦略の策定から現場での実装・定着まで。一気通貫で伴走し、事業と組織のポテンシャルを解放する8つの領域です。
       </p>
     </div>
 
     {EXPERTISE.map((e) => (
-      <article class="exp-block">
+      <article class="exp-block reveal">
         <div
           class="exp-visual img-mask hover-target"
           data-lightbox
-          data-img={e.image}
+          data-img={e.image.src}
           data-title={e.title}
           data-desc={e.desc}
         >
-          <img class="g-img" src={e.image} alt={e.title} loading="lazy" />
+          <Picture
+            class="g-img"
+            src={e.image}
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 768px) 92vw, 42vw"
+            formats={['avif', 'webp']}
+            alt={e.title}
+            loading="lazy"
+          />
         </div>
         <div class="exp-body">
           <div class="exp-num">/{e.num}</div>
@@ -36,7 +45,7 @@ import { EXPERTISE } from '../consts';
       </article>
     ))}
 
-    <section class="cta-band">
+    <section class="cta-band reveal">
       <p class="cta-lead">どの領域から始めるべきか。まずは現状をお聞かせください。</p>
       <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
     </section>

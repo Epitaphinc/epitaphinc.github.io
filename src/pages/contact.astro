@@ -11,9 +11,9 @@ const configured = Boolean(FORMSPREE_ID);
 >
   <div class="container">
     <div class="page-head">
-      <p class="page-eyebrow">Contact</p>
-      <h1 class="page-title">Get in Touch</h1>
-      <p class="page-lead">
+      <p class="page-eyebrow reveal">Contact</p>
+      <h1 class="page-title reveal" style="--rv-delay:80ms">Get in Touch</h1>
+      <p class="page-lead reveal" style="--rv-delay:160ms">
         ご相談・お問い合わせは下記フォーム、またはメールにて承ります。<br />
         まずは現状の課題やお考えを、お気軽にお聞かせください。
       </p>
@@ -21,7 +21,7 @@ const configured = Boolean(FORMSPREE_ID);
 
     <section class="sec" style="padding-top:0;">
       <form
-        class="form"
+        class="form reveal"
         method="POST"
         action={formspreeAction}
         data-configured={configured ? 'true' : 'false'}
@@ -67,8 +67,8 @@ const configured = Boolean(FORMSPREE_ID);
 
     <!-- 直接の連絡先 -->
     <section class="sec">
-      <h2 class="sec-title">Direct</h2>
-      <dl class="co-dl">
+      <h2 class="sec-title reveal">Direct</h2>
+      <dl class="co-dl reveal">
         <dt class="co-dt">EMAIL</dt>
         <dd class="co-dd"><a href={`mailto:${SITE.email}`} class="hover-target">{SITE.email}</a></dd>
         <dt class="co-dt">COMPANY</dt>
@@ -80,10 +80,14 @@ const configured = Boolean(FORMSPREE_ID);
   </div>
 
   <script>
-    // Formspree 未設定時は mailto にフォールバック
-    const form = document.querySelector<HTMLFormElement>('form.form');
-    const status = document.getElementById('form-status');
-    if (form) {
+    // Formspree 未設定時は mailto にフォールバック。
+    // View Transitions で戻ってきたときも動くよう astro:page-load ごとに初期化する
+    // （data-bound ガードで多重バインドを防止）。
+    const initContactForm = () => {
+      const form = document.querySelector<HTMLFormElement>('form.form');
+      if (!form || form.dataset.bound === 'true') return;
+      form.dataset.bound = 'true';
+      const status = document.getElementById('form-status');
       const configured = form.dataset.configured === 'true';
       const email = form.dataset.email || '';
 
@@ -128,6 +132,9 @@ const configured = Boolean(FORMSPREE_ID);
           }
         });
       }
-    }
+    };
+
+    initContactForm();
+    document.addEventListener('astro:page-load', initContactForm);
   </script>
 </Base>

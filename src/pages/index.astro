@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Gallery from '../components/Gallery.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { HERO, STATEMENT, EXPERTISE, SITE } from '../consts';
+import { HERO, STATEMENT, EXPERTISE } from '../consts';
 
 const galleryItems = EXPERTISE.map((e) => ({
   image: e.image,
@@ -15,15 +15,17 @@ const galleryItems = EXPERTISE.map((e) => ({
   <div class="container">
     <header class="hero">
       <h1 class="hero-big hover-target">
-        {HERO.titleLines.map((line) => <span style="display:block">{line}</span>)}
+        {HERO.titleLines.map((line, i) => (
+          <span class="hero-line-mask"><span class="hero-line" style={`--hl:${i}`}>{line}</span></span>
+        ))}
       </h1>
       <p class="hero-desc" set:html={HERO.desc} />
-      <div class="scroll-hint">Scroll ↓</div>
+      <div class="scroll-hint">Scroll</div>
     </header>
 
     <!-- ステートメント -->
     <section class="sec">
-      <p class="statement">
+      <p class="statement reveal">
         {STATEMENT.lead}<br /><br />
         <span style="color:var(--muted); font-size:1rem; line-height:2;">{STATEMENT.body}</span>
       </p>
@@ -31,10 +33,14 @@ const galleryItems = EXPERTISE.map((e) => ({
 
     <!-- Expertise 抜粋 -->
     <section class="sec">
-      <h2 class="sec-title">Expertise</h2>
+      <h2 class="sec-title reveal">Expertise</h2>
       <div class="service-list">
-        {EXPERTISE.map((e) => (
-          <a href="/expertise/" class="srv-item hover-target" style="color:inherit;">
+        {EXPERTISE.map((e, i) => (
+          <a
+            href="/expertise/"
+            class="srv-item hover-target reveal"
+            style={`color:inherit; --rv-delay:${Math.min(i * 60, 300)}ms`}
+          >
             <div style="display:flex; align-items:center;">
               <span class="srv-num">/{e.num}</span>
               <span class="srv-name">{e.title}</span>
@@ -47,12 +53,12 @@ const galleryItems = EXPERTISE.map((e) => ({
 
     <!-- Selected Works -->
     <section class="sec">
-      <h2 class="sec-title">Selected Works</h2>
+      <h2 class="sec-title reveal">Selected Works</h2>
       <Gallery items={galleryItems} />
     </section>
 
     <!-- CTA -->
-    <section class="cta-band">
+    <section class="cta-band reveal">
       <p class="cta-lead">理想と現実のあいだに、確かな「解」を。</p>
       <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
     </section>

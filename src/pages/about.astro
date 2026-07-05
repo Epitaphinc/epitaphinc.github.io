@@ -34,15 +34,15 @@ const history = [
 >
   <div class="container">
     <div class="page-head">
-      <p class="page-eyebrow">About</p>
-      <h1 class="page-title">Studio</h1>
-      <p class="page-lead">{STATEMENT.lead}{STATEMENT.body}</p>
+      <p class="page-eyebrow reveal">About</p>
+      <h1 class="page-title reveal" style="--rv-delay:80ms">Studio</h1>
+      <p class="page-lead reveal" style="--rv-delay:160ms">{STATEMENT.lead}{STATEMENT.body}</p>
     </div>
 
     <!-- ミッション -->
     <section class="sec">
-      <h2 class="sec-title">Mission</h2>
-      <p class="statement">
+      <h2 class="sec-title reveal">Mission</h2>
+      <p class="statement reveal">
         戦略を、<span class="em">現場の日常</span>へ。<br />
         理想と現実をつなぐ「解」を刻む。
       </p>
@@ -50,10 +50,10 @@ const history = [
 
     <!-- バリュー -->
     <section class="sec">
-      <h2 class="sec-title">Values</h2>
+      <h2 class="sec-title reveal">Values</h2>
       <div class="grid-3">
-        {values.map((v) => (
-          <div class="card hover-target">
+        {values.map((v, i) => (
+          <div class="card hover-target reveal" style={`--rv-delay:${i * 90}ms`}>
             <span class="card-num">/{v.num} {v.en}</span>
             <h3 class="card-title">{v.title}</h3>
             <p class="card-desc">{v.desc}</p>
@@ -64,8 +64,8 @@ const history = [
 
     <!-- 代表メッセージ（※草案。内容は要レビュー・差し替え） -->
     <section class="sec">
-      <h2 class="sec-title">Message</h2>
-      <div class="prose">
+      <h2 class="sec-title reveal">Message</h2>
+      <div class="prose reveal">
         <p>
           私たちは、経営の「ロジック」と現場の「リアリティ」は、本来分かちがたいものだと考えています。
           どれほど精緻な戦略も、現場で動かなければ意味を持ちません。逆に、現場の熱量も、進むべき方向を示す論理がなければ空回りします。
@@ -87,10 +87,10 @@ const history = [
 
     <!-- 沿革 -->
     <section class="sec">
-      <h2 class="sec-title">History</h2>
+      <h2 class="sec-title reveal">History</h2>
       <div class="timeline">
         {history.map((h) => (
-          <div class="tl-row">
+          <div class="tl-row reveal">
             <span class="tl-year">{h.year}</span>
             <span class="tl-text">{h.text}</span>
           </div>
@@ -100,8 +100,8 @@ const history = [
 
     <!-- 会社概要 -->
     <section class="sec">
-      <h2 class="sec-title">Company</h2>
-      <dl class="co-dl">
+      <h2 class="sec-title reveal">Company</h2>
+      <dl class="co-dl reveal">
         <dt class="co-dt">NAME</dt>
         <dd class="co-dd">{COMPANY.name}（{COMPANY.nameEn}）</dd>
         <dt class="co-dt">ADDRESS</dt>
@@ -115,7 +115,7 @@ const history = [
       </dl>
     </section>
 
-    <section class="cta-band">
+    <section class="cta-band reveal">
       <p class="cta-lead">事業と組織のポテンシャルを、解放する。</p>
       <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
     </section>

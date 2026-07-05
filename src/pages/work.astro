@@ -1,4 +1,5 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Gallery from '../components/Gallery.astro';
 import Lightbox from '../components/Lightbox.astro';
@@ -10,6 +11,9 @@ const galleryItems = EXPERTISE.map((e) => ({
   sub: e.titleEn,
   desc: e.desc,
 }));
+
+// フラッグシップ（データ化.com）のビジュアルは Expertise 07 の画像を流用
+const flagshipImage = EXPERTISE.find((e) => e.num === '07')!.image;
 ---
 <Base
   title="Work"
@@ -17,20 +21,28 @@ const galleryItems = EXPERTISE.map((e) => ({
 >
   <div class="container">
     <div class="page-head">
-      <p class="page-eyebrow">Work</p>
-      <h1 class="page-title">Initiatives</h1>
-      <p class="page-lead">
+      <p class="page-eyebrow reveal">Work</p>
+      <h1 class="page-title reveal" style="--rv-delay:80ms">Initiatives</h1>
+      <p class="page-lead reveal" style="--rv-delay:160ms">
         机上の空論ではなく、現場検証に基づいた取り組みを。自社事業と支援先での実践から生まれた「現実解」をご紹介します。
       </p>
     </div>
 
     <!-- フラッグシップ：データ化.com（自社プロダクト） -->
     <section class="sec">
-      <h2 class="sec-title">Flagship</h2>
-      <article class="exp-block">
+      <h2 class="sec-title reveal">Flagship</h2>
+      <article class="exp-block reveal">
         <div class="exp-visual img-mask hover-target"
-          data-lightbox data-img="/image/project7.jpg" data-title="データ化.com">
-          <img class="g-img" src="/image/project7.jpg" alt="データ化.com" loading="lazy" />
+          data-lightbox data-img={flagshipImage.src} data-title="データ化.com">
+          <Picture
+            class="g-img"
+            src={flagshipImage}
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 768px) 92vw, 42vw"
+            formats={['avif', 'webp']}
+            alt="データ化.com"
+            loading="lazy"
+          />
         </div>
         <div class="exp-body">
           <div class="exp-title">Digital Solution</div>
@@ -51,8 +63,8 @@ const galleryItems = EXPERTISE.map((e) => ({
 
     <!-- 領域別の取り組み -->
     <section class="sec">
-      <h2 class="sec-title">Fields of Work</h2>
-      <p class="page-lead" style="margin-bottom:1rem;">
+      <h2 class="sec-title reveal">Fields of Work</h2>
+      <p class="page-lead reveal" style="margin-bottom:1rem;">
         私たちが手がける領域の一端。画像をクリックすると詳細をご覧いただけます。
       </p>
       <Gallery items={galleryItems} />
@@ -60,7 +72,7 @@ const galleryItems = EXPERTISE.map((e) => ({
 
     <!-- 守秘に関する誠実な注記 -->
     <section class="sec">
-      <div class="prose">
+      <div class="prose reveal">
         <p class="form-note">
           ※ 個別の支援案件につきましては、守秘義務の都合上、本サイトでの詳細公開を控えております。
           具体的な実績・事例については、お問い合わせいただければ可能な範囲でご説明いたします。
@@ -68,7 +80,7 @@ const galleryItems = EXPERTISE.map((e) => ({
       </div>
     </section>
 
-    <section class="cta-band">
+    <section class="cta-band reveal">
       <p class="cta-lead">あなたの事業にとっての「現実解」を、ともに。</p>
       <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
     </section>

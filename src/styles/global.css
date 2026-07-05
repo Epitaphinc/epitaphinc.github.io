@@ -13,20 +13,29 @@
   --line: #333;         /* 罫線 */
   --accent: #fff;       /* ホバー時の発光 */
   --maxw: 1400px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* 演出共通イージング */
 }
 
 * { box-sizing: border-box; }
 
-/* カスタムカーソルを使うため標準カーソルは非表示 */
 html { -webkit-text-size-adjust: 100%; }
-body { cursor: none; }
-a, button, .hover-target { cursor: none; }
+
+/* スムーススクロール（reduced-motion 時は末尾で無効化） */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* カスタムカーソルはマウス等の精密ポインタ環境のみ（タッチ端末では標準のまま） */
+@media (pointer: fine) {
+  body, a, button, .hover-target { cursor: none; }
+}
 
 body {
   background-color: var(--bg);
   color: var(--text);
   font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -39,6 +48,24 @@ a:hover { color: var(--accent); }
 
 img { max-width: 100%; display: block; }
 
+/* テキスト選択もモノクロ反転で統一 */
+::selection { background: #fff; color: #050505; }
+
+/* キーボード操作の可視化（カーソル非表示環境での必須補完） */
+:focus-visible { outline: 1px solid #fff; outline-offset: 4px; }
+
+/* スクロールバーも世界観に合わせて暗く細く */
+html { scrollbar-width: thin; scrollbar-color: #333 #050505; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* 日本語見出し系は約物を詰めて締める */
+.page-title, .sec-title, .statement, .srv-name, .exp-name, .card-title, .lb-title {
+  font-feature-settings: 'palt';
+}
+
 /* ---- ノイズエフェクト（画面全体のザラつき） ---- */
 .noise {
   position: fixed; inset: 0; z-index: 999;
@@ -48,9 +75,13 @@ img { max-width: 100%; display: block; }
 
 /* ---- カスタムカーソル（白い追従円） ---- */
 .cursor-dot, .cursor-circle {
+  display: none;
   position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10000;
   border-radius: 50%; transform: translate(-50%, -50%);
   mix-blend-mode: exclusion;
+}
+@media (pointer: fine) {
+  .cursor-dot, .cursor-circle { display: block; }
 }
 .cursor-dot { width: 8px; height: 8px; background: #fff; }
 .cursor-circle {
@@ -122,13 +153,40 @@ body.hovering .cursor-circle {
   margin: 0; transition: 0.5s;
 }
 .hero:hover .hero-big { color: #fff; }
+
+/* ヒーロー入場演出：3行がマスクの下から順に立ち上がる */
+.hero-line-mask { display: block; overflow: hidden; padding-top: 0.06em; }
+.hero-line {
+  display: block; transform: translateY(110%);
+  animation: hero-rise 1s var(--ease-out) forwards;
+  animation-delay: calc(var(--hl, 0) * 0.13s + 0.1s);
+}
+@keyframes hero-rise { to { transform: translateY(0); } }
+
 .hero-desc {
   margin-top: 2rem; max-width: 420px; font-size: 0.95rem; line-height: 1.9;
   color: var(--muted); margin-left: auto;
+  opacity: 0; animation: fade-up 1s var(--ease-out) 0.6s forwards;
 }
 .scroll-hint {
   position: absolute; bottom: 3rem; left: 0; font-family: 'Montserrat', sans-serif;
   font-size: 0.7rem; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase;
+  opacity: 0; animation: fade-up 1s var(--ease-out) 1s forwards;
+}
+/* スクロールを促す、伸びて消える縦線 */
+.scroll-hint::after {
+  content: ''; display: block; width: 1px; height: 44px; margin: 12px auto 0;
+  background: linear-gradient(to bottom, #fff, transparent);
+  transform-origin: top; animation: line-drop 2.4s ease-in-out infinite;
+}
+@keyframes line-drop {
+  0% { transform: scaleY(0); opacity: 1; }
+  55% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ---- Expertise リスト ---- */
@@ -138,8 +196,12 @@ body.hovering .cursor-circle {
   display: flex; justify-content: space-between; align-items: center;
   transition: 0.4s; position: relative;
 }
-.srv-item:hover { padding-left: 2rem; background: #111; }
-.srv-num { font-family: 'Montserrat', sans-serif; color: var(--faint); margin-right: 2rem; }
+.srv-item:hover {
+  padding-left: 2rem;
+  background: linear-gradient(90deg, #141414, #0a0a0a 55%, transparent);
+}
+.srv-num { font-family: 'Montserrat', sans-serif; color: var(--faint); margin-right: 2rem; transition: color 0.4s; }
+.srv-item:hover .srv-num { color: var(--text); }
 .srv-name { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 300; }
 .srv-en { color: var(--faint); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; }
 .srv-arrow { font-size: 1.4rem; opacity: 0; transition: 0.4s; transform: translateX(-20px); }
@@ -166,6 +228,7 @@ body.hovering .cursor-circle {
 .gal-item { margin-bottom: 8rem; }
 .gal-item:nth-child(even) { margin-top: 12rem; }
 .img-mask { width: 100%; overflow: hidden; position: relative; }
+.img-mask picture { display: block; } /* astro:assets の <Picture> 対応 */
 .g-img {
   width: 100%; height: auto; display: block; filter: grayscale(100%);
   transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1); transform: scale(1.1);
@@ -174,7 +237,30 @@ body.hovering .cursor-circle {
 .g-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-top: 1rem; display: block; }
 .g-sub { color: var(--faint); font-size: 0.8rem; }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* ---- スクロール連動 reveal（JS が .is-visible を付与） ---- */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition:
+    opacity 0.9s var(--ease-out) var(--rv-delay, 0ms),
+    transform 0.9s var(--ease-out) var(--rv-delay, 0ms);
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* ホバーで padding/background が動く行は、reveal と両立する transition を明示 */
+.srv-item.reveal {
+  transition:
+    padding 0.4s, background 0.4s,
+    opacity 0.9s var(--ease-out) var(--rv-delay, 0ms),
+    transform 0.9s var(--ease-out) var(--rv-delay, 0ms);
+}
+/* カードはホバーで transform を使うため、reveal はフェードのみにする */
+.card.reveal {
+  transform: none;
+  transition:
+    background 0.4s, border-color 0.4s, transform 0.55s var(--ease-out),
+    opacity 0.9s var(--ease-out) var(--rv-delay, 0ms);
+}
+.card:hover { transform: translateY(-4px); }
 
 /* ---- 本文（About / Work などテキスト主体） ---- */
 .prose { max-width: 760px; }
@@ -189,7 +275,8 @@ body.hovering .cursor-circle {
 /* バリュー/カードグリッド */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
 .card {
-  border: 1px solid var(--line); padding: 2.5rem; transition: 0.4s; background: transparent;
+  border: 1px solid var(--line); padding: 2.5rem; background: transparent;
+  transition: background 0.4s, border-color 0.4s, transform 0.55s var(--ease-out);
 }
 .card:hover { background: #0d0d0d; border-color: #555; }
 .card-num { font-family: 'Montserrat', sans-serif; color: var(--faint); font-size: 0.85rem; letter-spacing: 0.1em; }
@@ -283,10 +370,20 @@ footer {
 .lb-close { position: absolute; top: 30px; right: 30px; font-size: 1.4rem; color: #fff; font-family: 'Montserrat', sans-serif; z-index: 10; }
 
 /* ---- レスポンシブ ---- */
+/* タブレット（769〜1024px）：余白を詰めてバランスを取る */
+@media (max-width: 1024px) {
+  .gallery { gap: 5vw; }
+  .gal-item { margin-bottom: 5rem; }
+  .gal-item:nth-child(even) { margin-top: 7rem; }
+  .exp-block { gap: 2.5rem; padding: 5rem 0; }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+}
+
 @media (max-width: 768px) {
-  .nav { padding: 1.2rem 5vw; }
-  .nav-links { gap: 1.1rem; }
-  .nav-links a { font-size: 0.7rem; }
+  .nav { padding: 1.2rem 4vw; gap: 1rem; }
+  .nav-brand { font-size: 0.95rem; }
+  .nav-links { gap: 0.9rem; }
+  .nav-links a { font-size: 0.65rem; letter-spacing: 0.05em; }
   .hero-big { font-size: 15vw; }
   .hero-desc { margin-left: 0; }
   .page-head { padding: 9rem 0 3rem; }
@@ -303,15 +400,15 @@ footer {
   .lb-content { flex-direction: column; gap: 2rem; overflow-y: auto; max-height: 90vh; }
   .lb-img-wrap { width: 100%; flex: none; }
   .lb-img { max-height: 50vh; width: 100%; object-fit: contain; }
-
-  /* スマホではカスタムカーソルを無効化 */
-  .cursor-dot, .cursor-circle { display: none; }
-  body, a, button, .hover-target { cursor: auto; }
+  /* カスタムカーソルの ON/OFF は @media (pointer: fine) で一元管理（上部参照） */
 }
 
 /* アクセシビリティ: モーション抑制設定を尊重 */
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  * {
+    animation-duration: 0.01ms !important; animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important; transition-delay: 0ms !important;
+  }
   .cursor-dot, .cursor-circle { display: none; }
-  body { cursor: auto; }
+  body, a, button, .hover-target { cursor: auto; }
 }

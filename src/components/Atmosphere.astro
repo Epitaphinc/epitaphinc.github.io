@@ -6,29 +6,42 @@
 <div class="cursor-circle"></div>
 
 <script>
-  // カスタムカーソル（白い追従円）＋ ホバー拡大
-  const dot = document.querySelector<HTMLElement>('.cursor-dot');
-  const circle = document.querySelector<HTMLElement>('.cursor-circle');
+  // カスタムカーソル（白い追従円）＋ ホバー拡大。
+  // View Transitions でページが差し替わると要素も新しくなるため、
+  // astro:page-load のたびに参照を取り直す。
+  let dot: HTMLElement | null = null;
+  let circle: HTMLElement | null = null;
 
-  if (dot && circle && window.matchMedia('(pointer: fine)').matches) {
+  const grab = () => {
+    dot = document.querySelector<HTMLElement>('.cursor-dot');
+    circle = document.querySelector<HTMLElement>('.cursor-circle');
+  };
+  grab();
+  document.addEventListener('astro:page-load', grab);
+
+  if (window.matchMedia('(pointer: fine)').matches) {
     let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
 
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top = mouseY + 'px';
+      if (dot) {
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      }
     });
 
     const animate = () => {
       curX += (mouseX - curX) * 0.15;
       curY += (mouseY - curY) * 0.15;
-      circle.style.left = curX + 'px';
-      circle.style.top = curY + 'px';
+      if (circle) {
+        circle.style.left = curX + 'px';
+        circle.style.top = curY + 'px';
+      }
       requestAnimationFrame(animate);
     };
     animate();
 
-    document.body.addEventListener('mouseover', (e) => {
+    document.addEventListener('mouseover', (e) => {
       const t = e.target as HTMLElement;
       if (t.closest('.hover-target') || t.closest('a') || t.closest('button')) {
         document.body.classList.add('hovering');

@@ -1,5 +1,7 @@
 ---
 // 画像拡大モーダル。ギャラリーを使うページで1回読み込む。
+// View Transitions 後も動くよう、クリックは document へのイベント委譲で拾い、
+// 要素参照はクリック時に毎回取得する（ページ差し替えで参照が死ぬのを防ぐ）。
 ---
 <div id="lightbox" class="lightbox">
   <div class="lb-close hover-target">CLOSE</div>
@@ -15,43 +17,56 @@
 </div>
 
 <script>
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lb-img') as HTMLImageElement | null;
-  const lbTitle = document.getElementById('lb-title');
-  const lbDesc = document.getElementById('lb-desc');
+  const getEls = () => {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lb-img') as HTMLImageElement | null;
+    const title = document.getElementById('lb-title');
+    const desc = document.getElementById('lb-desc');
+    return lb && img && title && desc ? { lb, img, title, desc } : null;
+  };
 
-  if (lb && lbImg && lbTitle && lbDesc) {
-    (window as any).openLightbox = (src: string, title?: string, desc?: string) => {
-      lbImg.src = src;
-      if (title && desc) {
-        lb.classList.add('has-text');
-        lbTitle.textContent = title;
-        lbDesc.textContent = desc;
-      } else {
-        lb.classList.remove('has-text');
-        lbTitle.textContent = '';
-        lbDesc.textContent = '';
-      }
-      lb.classList.add('active');
-    };
+  (window as any).openLightbox = (src: string, title?: string, desc?: string) => {
+    const els = getEls();
+    if (!els) return;
+    els.img.src = src;
+    if (title && desc) {
+      els.lb.classList.add('has-text');
+      els.title.textContent = title;
+      els.desc.textContent = desc;
+    } else {
+      els.lb.classList.remove('has-text');
+      els.title.textContent = '';
+      els.desc.textContent = '';
+    }
+    els.lb.classList.add('active');
+  };
 
-    lb.addEventListener('click', () => {
-      lb.classList.remove('active');
-      setTimeout(() => {
-        lbImg.src = '';
-        lb.classList.remove('has-text');
-      }, 400);
-    });
+  const closeLightbox = () => {
+    const els = getEls();
+    if (!els) return;
+    els.lb.classList.remove('active');
+    setTimeout(() => {
+      els.img.src = '';
+      els.lb.classList.remove('has-text');
+    }, 400);
+  };
 
-    // ギャラリー画像のクリックを拾う
-    document.querySelectorAll<HTMLElement>('[data-lightbox]').forEach((el) => {
-      el.addEventListener('click', () => {
-        (window as any).openLightbox(
-          el.dataset.img,
-          el.dataset.title || undefined,
-          el.dataset.desc || undefined
-        );
-      });
-    });
-  }
+  // モジュールは1回しか実行されないため、多重バインドの心配なく document に委譲する
+  document.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const trigger = t.closest<HTMLElement>('[data-lightbox]');
+    if (trigger) {
+      (window as any).openLightbox(
+        trigger.dataset.img,
+        trigger.dataset.title || undefined,
+        trigger.dataset.desc || undefined
+      );
+      return;
+    }
+    if (t.closest('#lightbox')) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
 </script>

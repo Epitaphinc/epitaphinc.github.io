@@ -1,7 +1,11 @@
 ---
 // グレースケール→ホバーでカラーになる2列ギャラリー。クリックで Lightbox 拡大。
+// 画像は astro:assets で AVIF/WebP へ最適化して配信する。
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 export type GalleryItem = {
-  image: string;
+  image: ImageMetadata;
   title: string;
   sub?: string;
   desc?: string;
@@ -12,16 +16,24 @@ interface Props {
 const { items } = Astro.props;
 ---
 <div class="gallery">
-  {items.map((item) => (
-    <div class="gal-item">
+  {items.map((item, i) => (
+    <div class="gal-item reveal" style={`--rv-delay:${(i % 2) * 90}ms`}>
       <div
         class="img-mask hover-target"
         data-lightbox
-        data-img={item.image}
+        data-img={item.image.src}
         data-title={item.title}
         data-desc={item.desc ?? ''}
       >
-        <img class="g-img" src={item.image} alt={item.title} loading="lazy" />
+        <Picture
+          class="g-img"
+          src={item.image}
+          widths={[480, 800, 1200]}
+          sizes="(max-width: 768px) 92vw, 42vw"
+          formats={['avif', 'webp']}
+          alt={item.title}
+          loading="lazy"
+        />
       </div>
       <span class="g-title">{item.title}</span>
       {item.sub && <span class="g-sub">{item.sub}</span>}
