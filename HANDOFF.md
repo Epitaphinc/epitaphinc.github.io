@@ -1,8 +1,8 @@
 # HANDOFF — 株式会社Epitaph コーポレートサイト
 
-最終更新: 2026-07-15 / 作業者: Claude Code（AI研修LP追加・作業途中で別アカウントへ引継ぎ）
+最終更新: 2026-07-15 / 作業者: Claude Code（AI研修LP追加・commit & push 完了）
 
-> **引継ぎ時の最優先事項**: 「4. 残タスク」の1番目（AI研修LPのcommit & push）を必ず先に読むこと。作業ツリーに未コミット差分がある状態で引き継いでいる。
+> **引継ぎ時の最優先事項**: 「4. 残タスク」の1番目（AI研修LP掲載の証跡保存）を先に読むこと。commit `48fd9ea` で push 済み・本番デプロイはGitHub Actions経由で進行中/完了。
 
 ---
 
@@ -42,7 +42,7 @@
 - **デザイン追加**: expertise 各ブロック背後に縁取り数字ウォーターマーク（`.exp-watermark`、モバイル非表示）、トップの Expertise リストに英語サブラベル表示。
 - **検証**: `npm run build` 成功（5ページ・画像108ファイル生成）。DOM/computed style で 9 領域の並び・フォントサイズ反映を確認。※Browser ペインのスクリーンショット機能がセッション全体で固まり視覚確認は不可だった（JS/ネットワークは正常、ページ側のエラーなし）。push 後に本番で目視確認を推奨。
 
-## 3.6. 2026-07-15 AI研修LP追加（本セッション最終作業・★未コミット★）
+## 3.6. 2026-07-15 AI研修LP追加（commit `48fd9ea` で push済み）
 
 `~/Documents/ai-training-grant/` で設計した「AI業務自動化 実践研修」（人材開発支援助成金・事業展開等リスキリング支援コース対応）を、コーポレートサイトと同一デザインシステムでLP化。
 
@@ -58,10 +58,10 @@
 
 ## 4. 残タスク
 
-1. **★最優先★ AI研修LP（3.6）の commit & push**（push=本番デプロイ。ユーザー承認待ちで停止中）。コミット対象は `src/consts.ts`・`src/pages/ai-training.astro` の2ファイルのみ（`git status` で確認可）。push後、掲載日の証跡（スクリーンショット等）を保存すること（助成金の事業外訓練＝一般公開要件の証跡として `ai-training-grant` 側で必要）
+1. **★最優先★ AI研修LP掲載の証跡保存**：2026-07-15 commit `48fd9ea` で `src/consts.ts`・`src/pages/ai-training.astro`・`HANDOFF.md` を push済み（本番デプロイはGitHub Actions経由で進行中/完了）。`https://epitaphinc.com/ai-training/` が実際に反映されたことを確認し、スクリーンショット等を保存すること（助成金の事業外訓練＝一般公開要件の証跡として `ai-training-grant` 側で必要）。**注意**: 本セッションの Browser ペインのスクリーンショット機能はタイムアウトし続け使用不可だった（get_page_text / read_page でのテキスト確認は可能）。別手段（実ブラウザで開いて手動キャプチャ等）での証跡取得を推奨。
 2. **Formspree 接続**: フォーム作成 → 発行 ID を `src/consts.ts` の `FORMSPREE_ID` に設定（空のままなら mailto フォールバックで動作。送信先 `info@epitaphinc.com`、honeypot `_gotcha` 実装済）
 3. npm audit 2件（low×1, high×1、Astro 依存ツリー由来）未対応
-4. （3.5 教育事業追加分は commit `be28937` で **push済み・完了**。このHANDOFFの旧記述は誤りだったため訂正）
+4. （3.5 教育事業追加分は commit `be28937` で **push済み・完了**。3.6 AI研修LPは commit `48fd9ea` で **push済み・完了**）
 
 ## 5. 要レビュー：草案コンテンツ（前回から継続）
 
