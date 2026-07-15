@@ -1,8 +1,8 @@
 # HANDOFF — 株式会社Epitaph コーポレートサイト
 
-最終更新: 2026-07-15 / 作業者: Claude Code（AI研修LP追加・commit & push 完了）
+最終更新: 2026-07-15 / 作業者: Claude Code（AI研修LP追加・commit & push・掲載証跡保存 まで完了）
 
-> **引継ぎ時の最優先事項**: 「4. 残タスク」の1番目（AI研修LP掲載の証跡保存）を先に読むこと。commit `48fd9ea` で push 済み・本番デプロイはGitHub Actions経由で進行中/完了。
+> AI研修LP関連は一通り完了。残タスクは「4. 残タスク」参照（Formspree未接続・npm audit未対応のみ）。
 
 ---
 
@@ -58,10 +58,9 @@
 
 ## 4. 残タスク
 
-1. **★最優先★ AI研修LP掲載の証跡保存**：2026-07-15 commit `48fd9ea` で `src/consts.ts`・`src/pages/ai-training.astro`・`HANDOFF.md` を push済み（本番デプロイはGitHub Actions経由で進行中/完了）。`https://epitaphinc.com/ai-training/` が実際に反映されたことを確認し、スクリーンショット等を保存すること（助成金の事業外訓練＝一般公開要件の証跡として `ai-training-grant` 側で必要）。**注意**: 本セッションの Browser ペインのスクリーンショット機能はタイムアウトし続け使用不可だった（get_page_text / read_page でのテキスト確認は可能）。別手段（実ブラウザで開いて手動キャプチャ等）での証跡取得を推奨。
-2. **Formspree 接続**: フォーム作成 → 発行 ID を `src/consts.ts` の `FORMSPREE_ID` に設定（空のままなら mailto フォールバックで動作。送信先 `info@epitaphinc.com`、honeypot `_gotcha` 実装済）
-3. npm audit 2件（low×1, high×1、Astro 依存ツリー由来）未対応
-4. （3.5 教育事業追加分は commit `be28937` で **push済み・完了**。3.6 AI研修LPは commit `48fd9ea` で **push済み・完了**）
+1. **Formspree 接続**: フォーム作成 → 発行 ID を `src/consts.ts` の `FORMSPREE_ID` に設定（空のままなら mailto フォールバックで動作。送信先 `info@epitaphinc.com`、honeypot `_gotcha` 実装済）
+2. npm audit 2件（low×1, high×1、Astro 依存ツリー由来）未対応
+3. （3.5 教育事業追加分は commit `be28937`、3.6 AI研修LPは commit `48fd9ea`/`d61faeb` で **push済み・完了**。掲載証跡PDFはユーザーが手動キャプチャし `ai-training-grant/02_研修機関側帳票/07_HP掲載証跡/2026-07-15_ai-training掲載証跡.pdf` へ保存済み）
 
 ## 5. 要レビュー：草案コンテンツ（前回から継続）
 
