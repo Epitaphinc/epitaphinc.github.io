@@ -1,0 +1,154 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../consts';
+
+const approach = [
+  {
+    num: '01',
+    title: '座学は60分だけ',
+    en: 'Minimal Lecture',
+    desc: '理論の講義は初回冒頭のみ。残り11時間は、すべて手を動かすハンズオンの時間です。',
+  },
+  {
+    num: '02',
+    title: '自分の業務に近いテーマを選ぶ',
+    en: 'Your Own Theme',
+    desc: '4つの演習パターンから、いま抱えている業務にいちばん近いものを選び、実践形式で取り組みます。',
+  },
+  {
+    num: '03',
+    title: 'どこまで任せるかを設計する',
+    en: 'Human in the Loop',
+    desc: '「全部AI任せ」にしない設計思考を学びます。任せる範囲と、人が確かめる範囲を切り分ける考え方です。',
+  },
+  {
+    num: '04',
+    title: '使い慣れたツールのまま',
+    en: 'Microsoft & Google',
+    desc: 'Microsoft 365・Google Workspaceの2トラックに対応。ふだんの業務ツールの延長で学べます。',
+  },
+];
+
+const program = [
+  { num: '01', format: '対面・3時間', text: 'AIの基礎・情報のあつかい方・伝え方の基本 ＋ 演習1テーマ' },
+  { num: '02', format: 'オンライン・3時間', text: '演習2テーマ目・3テーマ目' },
+  { num: '03', format: 'オンライン・3時間', text: '演習4テーマ目 ＋ 自分の業務テーマへの取り組み開始' },
+  { num: '04', format: '対面・3時間', text: '仕上げ・成果の共有 ＋ 現場で活かすための計画づくり' },
+];
+
+const exercises = [
+  { num: '01', name: '帳票の自動編集', en: 'Format & Edit', desc: '表記のばらつきを整え、集計までを自動化する' },
+  { num: '02', name: '定型帳票の自動生成', en: 'Generate Documents', desc: '入力データから、決まった形の書類の下書きをつくる' },
+  { num: '03', name: '文書・メールの下書き自動化', en: 'Draft Assistance', desc: 'よく書く連絡文を、状況を伝えるだけで用意する' },
+  { num: '04', name: 'データの集計・転記の自動化', en: 'Consolidate Data', desc: '複数の表やファイルをまたぐ集計・つき合わせをまとめる' },
+];
+---
+<Base
+  title="AI Training"
+  description="AIとの距離が、ぐっと縮まる12時間。株式会社Epitaphが提供する実務直結のAI研修「AI業務自動化 実践研修」。座学は60分のみ、残りはすべてハンズオン形式で、自分の業務に近いテーマに取り組みます。"
+>
+  <div class="container">
+    <div class="page-head">
+      <p class="page-eyebrow reveal">Training</p>
+      <h1 class="page-title reveal" style="--rv-delay:80ms">AI Training</h1>
+      <p class="page-lead reveal" style="--rv-delay:160ms">
+        AIとの距離が、ぐっと縮まる12時間。<br />
+        座学はわずか60分。残りはすべて、自分の手を動かしながら学ぶ時間です。
+      </p>
+    </div>
+
+    <!-- こんな方に -->
+    <section class="sec" style="padding-top:0;">
+      <h2 class="sec-title reveal">Who It's For</h2>
+      <div class="prose reveal">
+        <p>
+          「AIが話題なのは知っているけれど、触ったことがない」「毎月、同じ作業に時間を取られている」——
+          そんな実務担当者のための研修です。プログラミングの経験は必要ありません。
+          パソコンで表計算ソフトを使ったことがある、という程度で十分です。
+        </p>
+        <p>
+          部門・職種は問いません。日々の業務の中で「決まった手順のくり返し」に心当たりがある方であれば、
+          どなたでも得るものがある内容です。
+        </p>
+      </div>
+    </section>
+
+    <!-- 4つの特徴 -->
+    <section class="sec">
+      <h2 class="sec-title reveal">Approach</h2>
+      <div class="grid-3">
+        {approach.map((a, i) => (
+          <div class="card hover-target reveal" style={`--rv-delay:${i * 90}ms`}>
+            <span class="card-num">/{a.num} {a.en}</span>
+            <h3 class="card-title">{a.title}</h3>
+            <p class="card-desc">{a.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- プログラム -->
+    <section class="sec">
+      <h2 class="sec-title reveal">Program</h2>
+      <div class="timeline">
+        {program.map((p) => (
+          <div class="tl-row reveal">
+            <span class="tl-year">第{p.num}回<br /><span style="color:var(--faint); font-size:0.85rem;">{p.format}</span></span>
+            <span class="tl-text">{p.text}</span>
+          </div>
+        ))}
+      </div>
+      <p class="form-note" style="margin-top:1.5rem;">全4回・合計12時間。演習はすべて、練習用の模擬データを使って行います。</p>
+    </section>
+
+    <!-- 演習パターン -->
+    <section class="sec" style="padding-top:0;">
+      <h2 class="sec-title reveal">Exercises</h2>
+      <div class="service-list">
+        {exercises.map((e) => (
+          <div class="srv-item reveal">
+            <div>
+              <span class="srv-num">/{e.num}</span>
+              <span class="srv-name">{e.name}</span>
+              <span class="srv-en">{e.en} — {e.desc}</span>
+            </div>
+            <span class="srv-arrow">→</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 受講料・開催概要 -->
+    <section class="sec">
+      <h2 class="sec-title reveal">Details</h2>
+      <dl class="co-dl reveal">
+        <dt class="co-dt">FORMAT</dt>
+        <dd class="co-dd">対面2回 ＋ オンライン2回（同時双方向）／ 全12時間</dd>
+        <dt class="co-dt">FEE</dt>
+        <dd class="co-dd">300,000円（税抜）／ 1名</dd>
+        <dt class="co-dt">TOOLS</dt>
+        <dd class="co-dd">Microsoft 365（Copilot／Excel）または Google Workspace（Gemini／スプレッドシート）</dd>
+        <dt class="co-dt">FOR</dt>
+        <dd class="co-dd">企業の実務担当者（部門・職種不問）</dd>
+      </dl>
+    </section>
+
+    <!-- FAQ -->
+    <section class="sec">
+      <h2 class="sec-title reveal">FAQ</h2>
+      <dl class="co-dl reveal">
+        <dt class="co-dt">経験は必要？</dt>
+        <dd class="co-dd">プログラミング経験は不要です。表計算ソフトの基本操作ができれば十分です。</dd>
+        <dt class="co-dt">使うデータは？</dt>
+        <dd class="co-dd">演習はすべて、実際の業務データを模した練習用データで行います。学んだ型を、研修後にご自身の業務へ活かしていただく設計です。</dd>
+        <dt class="co-dt">助成金は？</dt>
+        <dd class="co-dd">人材開発支援助成金の活用をご検討いただける場合があります。適用可否は各社の申請・審査によります。詳しくはお問い合わせください。</dd>
+      </dl>
+    </section>
+
+    <section class="cta-band reveal">
+      <p class="cta-lead">まずは、いまの業務の悩みをお聞かせください。</p>
+      <a href="/contact/" class="cta-big hover-target">GET IN TOUCH</a>
+    </section>
+  </div>
+</Base>
