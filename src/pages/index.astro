@@ -43,7 +43,10 @@ const galleryItems = EXPERTISE.map((e) => ({
           >
             <div style="display:flex; align-items:center;">
               <span class="srv-num">/{e.num}</span>
-              <span class="srv-name">{e.title}</span>
+              <span>
+                <span class="srv-name">{e.title}</span>
+                <span class="srv-en">{e.titleEn}</span>
+              </span>
             </div>
             <span class="srv-arrow">VIEW DETAIL →</span>
           </a>

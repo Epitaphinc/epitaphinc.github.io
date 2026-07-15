@@ -8,8 +8,8 @@
 :root {
   --bg: #050505;        /* 背景（ほぼ黒） */
   --text: #e0e0e0;      /* 基本文字色 */
-  --muted: #888;        /* 補助テキスト */
-  --faint: #555;        /* さらに薄いテキスト/番号 */
+  --muted: #969696;     /* 補助テキスト (可読性のためコントラスト確保) */
+  --faint: #6e6e6e;     /* さらに薄いテキスト/番号 */
   --line: #333;         /* 罫線 */
   --accent: #fff;       /* ホバー時の発光 */
   --maxw: 1400px;
@@ -109,7 +109,7 @@ body.hovering .cursor-circle {
 .nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; }
 .nav-links a {
   font-family: 'Montserrat', sans-serif; font-weight: 700;
-  font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
+  font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
   position: relative;
 }
 .nav-links a::after {
@@ -121,8 +121,8 @@ body.hovering .cursor-circle {
 /* ---- 各ページ共通の見出しヘッダー ---- */
 .page-head { padding: 14rem 0 4rem; }
 .page-eyebrow {
-  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); margin: 0 0 1rem;
+  font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.24em; text-transform: uppercase; color: var(--faint); margin: 0 0 1rem;
 }
 .page-title {
   font-family: 'Montserrat', sans-serif; font-weight: 700;
@@ -130,7 +130,7 @@ body.hovering .cursor-circle {
   text-transform: uppercase;
 }
 .page-lead {
-  margin-top: 2rem; max-width: 640px; font-size: 1.05rem; line-height: 2; color: var(--muted);
+  margin-top: 2rem; max-width: 640px; font-size: 1.1rem; line-height: 2; color: var(--muted);
 }
 
 /* ---- セクション共通 ---- */
@@ -164,13 +164,13 @@ body.hovering .cursor-circle {
 @keyframes hero-rise { to { transform: translateY(0); } }
 
 .hero-desc {
-  margin-top: 2rem; max-width: 420px; font-size: 0.95rem; line-height: 1.9;
+  margin-top: 2rem; max-width: 460px; font-size: 1.05rem; line-height: 2;
   color: var(--muted); margin-left: auto;
   opacity: 0; animation: fade-up 1s var(--ease-out) 0.6s forwards;
 }
 .scroll-hint {
   position: absolute; bottom: 3rem; left: 0; font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase;
+  font-size: 0.75rem; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase;
   opacity: 0; animation: fade-up 1s var(--ease-out) 1s forwards;
 }
 /* スクロールを促す、伸びて消える縦線 */
@@ -203,7 +203,9 @@ body.hovering .cursor-circle {
 .srv-num { font-family: 'Montserrat', sans-serif; color: var(--faint); margin-right: 2rem; transition: color 0.4s; }
 .srv-item:hover .srv-num { color: var(--text); }
 .srv-name { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 300; }
-.srv-en { color: var(--faint); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; }
+.srv-en { color: var(--faint); font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase; }
+.srv-item .srv-en { display: block; margin-top: 0.4rem; transition: color 0.4s; }
+.srv-item:hover .srv-en { color: var(--muted); }
 .srv-arrow { font-size: 1.4rem; opacity: 0; transition: 0.4s; transform: translateX(-20px); }
 .srv-item:hover .srv-arrow { opacity: 1; transform: translateX(0); }
 
@@ -211,8 +213,19 @@ body.hovering .cursor-circle {
 .exp-block {
   display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
   padding: 6rem 0; border-bottom: 1px solid var(--line);
+  position: relative;
 }
 .exp-block:nth-child(even) .exp-visual { order: 2; }
+/* 背後に浮かぶ縁取り数字のウォーターマーク */
+.exp-watermark {
+  position: absolute; top: 50%; right: -1vw; transform: translateY(-50%);
+  font-family: 'Montserrat', sans-serif; font-weight: 700; line-height: 1;
+  font-size: clamp(7rem, 15vw, 14rem);
+  color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+  pointer-events: none; user-select: none; z-index: 0;
+}
+.exp-block:nth-child(even) .exp-watermark { right: auto; left: -1vw; }
+.exp-visual, .exp-body { position: relative; z-index: 1; }
 .exp-num {
   font-family: 'Montserrat', sans-serif; font-size: 1rem; color: var(--faint); letter-spacing: 0.1em;
 }
@@ -221,7 +234,7 @@ body.hovering .cursor-circle {
   letter-spacing: 0.1em; color: var(--faint); margin: 0.3rem 0 0.6rem; text-transform: uppercase;
 }
 .exp-name { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 300; margin: 0 0 1.6rem; }
-.exp-desc { color: var(--muted); font-size: 1rem; line-height: 2; max-width: 36em; }
+.exp-desc { color: var(--muted); font-size: 1.05rem; line-height: 2.1; max-width: 36em; }
 
 /* ---- ギャラリー（グレースケール→ホバーでカラー） ---- */
 .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8vw; margin-top: 4rem; }
@@ -235,7 +248,7 @@ body.hovering .cursor-circle {
 }
 .img-mask:hover .g-img { filter: grayscale(0%); transform: scale(1); }
 .g-title { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-top: 1rem; display: block; }
-.g-sub { color: var(--faint); font-size: 0.8rem; }
+.g-sub { color: var(--faint); font-size: 0.9rem; font-family: 'Montserrat', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* ---- スクロール連動 reveal（JS が .is-visible を付与） ---- */
 .reveal {
@@ -264,7 +277,7 @@ body.hovering .cursor-circle {
 
 /* ---- 本文（About / Work などテキスト主体） ---- */
 .prose { max-width: 760px; }
-.prose p { color: var(--muted); font-size: 1.05rem; line-height: 2.1; margin: 0 0 1.6rem; }
+.prose p { color: var(--muted); font-size: 1.1rem; line-height: 2.1; margin: 0 0 1.6rem; }
 .prose strong { color: var(--text); font-weight: 500; }
 .statement {
   font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.9; font-weight: 300; color: var(--text);
@@ -279,9 +292,9 @@ body.hovering .cursor-circle {
   transition: background 0.4s, border-color 0.4s, transform 0.55s var(--ease-out);
 }
 .card:hover { background: #0d0d0d; border-color: #555; }
-.card-num { font-family: 'Montserrat', sans-serif; color: var(--faint); font-size: 0.85rem; letter-spacing: 0.1em; }
+.card-num { font-family: 'Montserrat', sans-serif; color: var(--faint); font-size: 0.9rem; letter-spacing: 0.1em; }
 .card-title { font-size: 1.4rem; font-weight: 300; margin: 1rem 0; }
-.card-desc { color: var(--muted); font-size: 0.95rem; line-height: 1.9; }
+.card-desc { color: var(--muted); font-size: 1rem; line-height: 2; }
 
 /* 沿革（タイムライン） */
 .timeline { border-top: 1px solid var(--line); }
@@ -300,14 +313,14 @@ body.hovering .cursor-circle {
 /* ---- CTA ボタン ---- */
 .btn {
   display: inline-block; font-family: 'Montserrat', sans-serif; font-weight: 700;
-  font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase;
   border: 1px solid #555; padding: 1rem 2.4rem; color: #fff; transition: 0.3s;
 }
 .btn:hover { background: #fff; color: #050505; letter-spacing: 0.15em; }
 
 /* 大型 CTA（フッター上の誘導） */
 .cta-band { text-align: center; padding: 8rem 0; border-top: 1px solid var(--line); }
-.cta-lead { color: var(--muted); margin-bottom: 2.5rem; font-size: 1.05rem; }
+.cta-lead { color: var(--muted); margin-bottom: 2.5rem; font-size: 1.1rem; }
 .cta-big {
   font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(2.2rem, 6vw, 4rem);
   color: #fff; display: inline-block; transition: 0.3s;
@@ -318,7 +331,7 @@ body.hovering .cursor-circle {
 .form { max-width: 640px; display: grid; gap: 2rem; }
 .field { display: grid; gap: 0.6rem; }
 .field label {
-  font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em;
+  font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--muted);
 }
 .field input, .field textarea, .field select {
@@ -332,7 +345,7 @@ body.hovering .cursor-circle {
 .field textarea { resize: vertical; min-height: 140px; }
 .field select option { background: #111; }
 .hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; } /* honeypot */
-.form-note { color: var(--faint); font-size: 0.85rem; line-height: 1.8; }
+.form-note { color: var(--muted); font-size: 0.9rem; line-height: 1.9; }
 
 /* ---- フッター ---- */
 footer {
@@ -342,10 +355,10 @@ footer {
   display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem;
 }
 .foot-brand { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.4rem; color: #fff; }
-.foot-tag { color: var(--faint); font-size: 0.85rem; margin-top: 0.5rem; }
+.foot-tag { color: var(--faint); font-size: 0.9rem; margin-top: 0.5rem; }
 .foot-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-.foot-links a { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.foot-copy { color: var(--faint); font-size: 0.8rem; margin-top: 3rem; }
+.foot-links a { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.foot-copy { color: var(--faint); font-size: 0.85rem; margin-top: 3rem; }
 
 /* ---- ライトボックス（画像拡大） ---- */
 .lightbox {
@@ -366,7 +379,7 @@ footer {
 .lightbox.has-text .lb-info { display: flex; }
 .lightbox:not(.has-text) .lb-img-wrap { flex: auto; width: 100%; }
 .lb-title { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; margin-bottom: 1.5rem; color: #fff; line-height: 1.1; }
-.lb-desc { font-size: 0.95rem; line-height: 1.9; color: #aaa; border-left: 1px solid var(--line); padding-left: 1.5rem; }
+.lb-desc { font-size: 1rem; line-height: 2; color: #b5b5b5; border-left: 1px solid var(--line); padding-left: 1.5rem; }
 .lb-close { position: absolute; top: 30px; right: 30px; font-size: 1.4rem; color: #fff; font-family: 'Montserrat', sans-serif; z-index: 10; }
 
 /* ---- レスポンシブ ---- */
@@ -383,7 +396,7 @@ footer {
   .nav { padding: 1.2rem 4vw; gap: 1rem; }
   .nav-brand { font-size: 0.95rem; }
   .nav-links { gap: 0.9rem; }
-  .nav-links a { font-size: 0.65rem; letter-spacing: 0.05em; }
+  .nav-links a { font-size: 0.72rem; letter-spacing: 0.04em; }
   .hero-big { font-size: 15vw; }
   .hero-desc { margin-left: 0; }
   .page-head { padding: 9rem 0 3rem; }
@@ -393,6 +406,7 @@ footer {
 
   .exp-block { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 0; }
   .exp-block:nth-child(even) .exp-visual { order: 0; }
+  .exp-watermark { display: none; } /* モバイルは本文の可読性を優先 */
 
   .grid-3 { grid-template-columns: 1fr; gap: 1.5rem; }
   .tl-row, .co-dl { grid-template-columns: 1fr; gap: 0.4rem; }

@@ -1,6 +1,6 @@
 # HANDOFF — 株式会社Epitaph コーポレートサイト
 
-最終更新: 2026-07-05 / 作業者: Claude Code（デザイン洗練化の完了時点）
+最終更新: 2026-07-15 / 作業者: Claude Code（教育事業追加＋ビジュアル/コピー刷新の完了時点）
 
 ---
 
@@ -31,9 +31,18 @@
 - **細部**: `::selection` 白黒反転・細スクロールバー・`:focus-visible` 白アウトライン・srv-item ホバーをグラデ＋番号色変化・card ホバー translateY(-4px)・smooth scroll（reduced-motion 時無効）。
 - **検証済み**: 全5ページ console エラー0・遷移後の Lightbox/フォーム/reveal 再動作・モバイル375/タブレット900/デスクトップで横スクロール0・`npm run build` 成功（AVIF/WebP 96ファイル生成、img に width/height/srcset 付与）。
 
+## 3.5. 2026-07-15 教育事業追加＋ビジュアル/コピー刷新
+
+- **Expertise に「08 教育事業 (Education)」を新設**、ソーシャルインパクトは 09 へ繰り下げ（`consts.ts` の EXPERTISE 配列）。
+- **画像を全面刷新**: 旧画像は英語ラベル/崩れ文字入りのAI生成ストック風で世界観と乖離していたため、漆黒×ミニマルに合わせた自作のジェネラティブアート9枚（1600x1000、領域ごとのモチーフ＋差し色、グレースケール→ホバーでカラーが映える設計）に置換。生成スクリプトはセッション scratchpad の `gen_art.py`（リポジトリ外・再生成時は要再作成）。ファイル名は project1〜8 を上書き＋project9.jpg（教育=project9、ソーシャル=project8 のまま）。
+- **説明文を全9領域ブラッシュアップ**（「絵に描いた戦略は〜」等、断定調で統一。コピー刷新であり意味は既存踏襲）。SITE.description / expertise メタ / page-lead も「9つの領域」「教育・人材育成」へ更新。
+- **可読性向上**: `--muted` #888→#969696・`--faint` #555→#6e6e6e、小さい文字を底上げ（nav 0.8→0.85rem・g-sub 0.8→0.9rem・exp-desc 1→1.05rem・foot/form/lead 各+0.05rem 等、モバイル nav 0.65→0.72rem）。
+- **デザイン追加**: expertise 各ブロック背後に縁取り数字ウォーターマーク（`.exp-watermark`、モバイル非表示）、トップの Expertise リストに英語サブラベル表示。
+- **検証**: `npm run build` 成功（5ページ・画像108ファイル生成）。DOM/computed style で 9 領域の並び・フォントサイズ反映を確認。※Browser ペインのスクリーンショット機能がセッション全体で固まり視覚確認は不可だった（JS/ネットワークは正常、ページ側のエラーなし）。push 後に本番で目視確認を推奨。
+
 ## 4. 残タスク
 
-1. **本セッション分の commit & push**（push=本番デプロイ。ユーザー承認待ち）
+1. **本セッション分（2026-07-15 教育事業追加）の commit & push**（push=本番デプロイ。ユーザー承認待ち）
 2. **Formspree 接続**: フォーム作成 → 発行 ID を `src/consts.ts` の `FORMSPREE_ID` に設定（空のままなら mailto フォールバックで動作。送信先 `info@epitaphinc.com`、honeypot `_gotcha` 実装済）
 3. npm audit 2件（low×1, high×1、Astro 依存ツリー由来）未対応
 

@@ -6,19 +6,20 @@ import { EXPERTISE } from '../consts';
 ---
 <Base
   title="Expertise"
-  description="株式会社Epitaphの専門領域。戦略策定・組織開発・プロジェクトマネジメント・新規事業開発・データ分析・AIトランスフォーメーション・デジタルソリューション・ソーシャルインパクトまで、戦略から実装まで一気通貫で支援します。"
+  description="株式会社Epitaphの専門領域。戦略策定・組織開発・プロジェクトマネジメント・新規事業開発・データ分析・AIトランスフォーメーション・デジタルソリューション・教育事業・ソーシャルインパクトまで、戦略から実装まで一気通貫で支援します。"
 >
   <div class="container">
     <div class="page-head">
       <p class="page-eyebrow reveal">Expertise</p>
       <h1 class="page-title reveal" style="--rv-delay:80ms">What We Do</h1>
       <p class="page-lead reveal" style="--rv-delay:160ms">
-        戦略の策定から現場での実装・定着まで。一気通貫で伴走し、事業と組織のポテンシャルを解放する8つの領域です。
+        戦略の策定から現場での実装・定着まで。一気通貫で伴走し、事業と組織のポテンシャルを解放する9つの領域です。
       </p>
     </div>
 
     {EXPERTISE.map((e) => (
       <article class="exp-block reveal">
+        <div class="exp-watermark" aria-hidden="true">{e.num}</div>
         <div
           class="exp-visual img-mask hover-target"
           data-lightbox
